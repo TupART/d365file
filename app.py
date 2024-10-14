@@ -40,5 +40,9 @@ def process_selected():
     
     return send_file(output_path, as_attachment=True)
 
+# Especificar que Vercel utilice 'app' como entry point
 if __name__ == '__main__':
     app.run(debug=True)
+
+# Exponer el objeto 'app' para Vercel
+app = app
