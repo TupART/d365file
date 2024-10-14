@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file, redirect, url_for
+from flask import Flask, render_template, request, send_file
 from openpyxl import load_workbook
 import io
 import os
@@ -18,6 +18,7 @@ def index():
 @app.route('/generate_checkboxes', methods=['POST'])
 def generate_checkboxes():
     try:
+        # Verificar si hay un archivo en la petición
         if 'file' not in request.files:
             return "No se ha enviado ningún archivo", 400
 
@@ -33,16 +34,17 @@ def generate_checkboxes():
         wb = load_workbook(file_path)
         ws = wb.active
 
+        # Lista de personas a mostrar en los checkboxes
         people = []
         for i, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=2):
-            if row[0] and row[1]:  # Asegúrate de que Name y Surname no sean nulos
+            if row[0] and row[1]:  # Asegurarse de que Name y Surname no sean nulos
                 people.append({
-                    'index': i,
-                    'name': row[0],  # Columna A ("Name")
+                    'index': i,        # Índice de la fila
+                    'name': row[0],    # Columna A ("Name")
                     'surname': row[1]  # Columna B ("Surname")
                 })
 
-        # Renderizar una nueva página con los checkboxes
+        # Renderizar la página con los checkboxes
         return render_template('index.html', people=people, file_path=file_path)
 
     except Exception as e:
