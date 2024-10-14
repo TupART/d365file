@@ -25,7 +25,7 @@ def upload_file():
             return "Archivo no seleccionado", 400
         
         # Cargar la plantilla original
-        plantilla_path = 'Plantilla.xlsx'  # Asegúrate de que esté en el mismo directorio
+        plantilla_path = 'PlantillaSTEP4.xlsx'  # Asegúrate de que esté en el mismo directorio
         wb_plantilla = load_workbook(plantilla_path)
         ws_plantilla = wb_plantilla.active
         
