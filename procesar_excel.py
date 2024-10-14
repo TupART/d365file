@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, send_file
 from openpyxl import load_workbook
+import io
 import logging
 
 app = Flask(__name__)
@@ -24,7 +25,7 @@ def upload_file():
             return "Archivo no seleccionado", 400
         
         # Cargar la plantilla original
-        plantilla_path = 'PlantillaSTEP4.xlsx'  # Asegúrate de que esté en el mismo directorio
+        plantilla_path = 'Plantilla.xlsx'  # Asegúrate de que esté en el mismo directorio
         wb_plantilla = load_workbook(plantilla_path)
         ws_plantilla = wb_plantilla.active
         
@@ -34,7 +35,7 @@ def upload_file():
         
         # Iterar por las filas y transferir datos a partir de la fila 7
         for i, row in enumerate(ws_subido.iter_rows(min_row=2, values_only=True), start=7):
-            if len(row) < 19:  # Asegúrate de que haya al menos 19 columnas
+            if len(row) < 19:
                 logging.error(f'Fila {i} tiene menos de 19 columnas: {row}')
                 continue  # Saltar a la siguiente fila si hay menos de 19 columnas
             
@@ -49,12 +50,13 @@ def upload_file():
             ws_plantilla[f'R{i}'] = row[15] if len(row) > 15 else ""  # "TTG UserID 1"
             ws_plantilla[f'V{i}'] = 'Agent'  # "Campaign Level"
 
-        # Guardar el archivo generado
-        output_file = 'Plantilla_generada.xlsx'
-        wb_plantilla.save(output_file)
+        # Guardar el archivo generado en memoria en lugar de disco
+        output_stream = io.BytesIO()
+        wb_plantilla.save(output_stream)
+        output_stream.seek(0)  # Volver al inicio del stream
 
         # Enviar el archivo generado al cliente
-        return send_file(output_file, as_attachment=True)
+        return send_file(output_stream, as_attachment=True, download_name="Plantilla_generada.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
     except Exception as e:
         logging.error(f'Error: {e}')
