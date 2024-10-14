@@ -1,15 +1,27 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Plantilla Excel</title>
+    <title>Subir Archivo Excel</title>
 </head>
 <body>
-    <h1>Sube tu archivo Excel</h1>
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".xlsx" required>
-        <button type="submit">Subir y procesar</button>
+    <h1>Subir Archivo Excel</h1>
+    <form action="/generate_checkboxes" method="post" enctype="multipart/form-data">
+        <label for="file">Selecciona el archivo Excel:</label>
+        <input type="file" name="file" id="file" accept=".xlsx" required><br><br>
+        <button type="submit">Subir y Mostrar Nombres</button>
     </form>
+
+    {% if people %}
+    <h2>Selecciona las personas cuyos datos quieres exportar:</h2>
+    <form action="/export_selected" method="post">
+        {% for person in people %}
+            <input type="checkbox" name="selected_people" value="{{ person['index'] }}" checked> {{ person['name'] }} {{ person['surname'] }}<br>
+        {% endfor %}
+        <input type="hidden" name="file_path" value="{{ file_path }}">
+        <button type="submit">Exportar Datos Seleccionados</button>
+    </form>
+    {% endif %}
 </body>
 </html>
