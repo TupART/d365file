@@ -34,14 +34,33 @@ def generate_checkboxes():
         wb = load_workbook(file_path)
         ws = wb.active
 
+        # Encuentra las columnas de Name y Surname dinámicamente
+        headers = [cell.value for cell in next(ws.iter_rows(min_row=1, max_row=1))]
+        name_col_idx = None
+        surname_col_idx = None
+
+        # Buscar las columnas que contienen "Name" y "Surname"
+        for idx, header in enumerate(headers):
+            if "name" in str(header).lower():
+                name_col_idx = idx
+            elif "surname" in str(header).lower():
+                surname_col_idx = idx
+
+        # Asegurarse de haber encontrado ambas columnas
+        if name_col_idx is None or surname_col_idx is None:
+            return "No se encontraron las columnas de 'Name' y 'Surname' en el archivo", 400
+
         # Lista de personas a mostrar en los checkboxes
         people = []
         for i, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=2):
-            if row[0] and row[1]:  # Asegurarse de que Name y Surname no sean nulos
+            name = row[name_col_idx] if len(row) > name_col_idx else None
+            surname = row[surname_col_idx] if len(row) > surname_col_idx else None
+
+            if name and surname:  # Asegurarse de que Name y Surname no sean nulos
                 people.append({
                     'index': i,        # Índice de la fila
-                    'name': row[0],    # Columna A ("Name")
-                    'surname': row[1]  # Columna B ("Surname")
+                    'name': name,      # Nombre
+                    'surname': surname # Apellido
                 })
 
         # Verificar si se extrajo alguna persona
