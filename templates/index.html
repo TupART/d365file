@@ -1,33 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subir Archivo Excel</title>
+    <title>Subir archivo</title>
 </head>
 <body>
-    <h1>Subir Archivo Excel1</h1>
-    
-    <!-- Formulario para subir archivo Excel -->
+    <h1>Subir archivo Excel</h1>
     <form action="/generate_checkboxes" method="post" enctype="multipart/form-data">
-        <label for="file">Selecciona el archivo Excel:</label>
-        <input type="file" name="file" id="file" accept=".xlsx" required><br><br>
-        <button type="submit">Subir y Mostrar Nombres</button>
+        <input type="file" name="file" accept=".xlsx" required>
+        <button type="submit">Cargar archivo</button>
     </form>
-
-    <!-- Verificar si existen personas para mostrar la lista de checkboxes -->
-    {% if people %}
-        <h2>Selecciona las personas cuyos datos quieres exportar:</h2>
-        <form action="/export_selected" method="post">
-            {% for person in people %}
-                <!-- Crear checkbox con el nombre y apellido de la persona -->
-                <input type="checkbox" name="selected_people" value="{{ person['index'] }}" checked> 
-                {{ person['name'] }} {{ person['surname'] }}<br>
-            {% endfor %}
-            <!-- Enviar la ruta del archivo como campo oculto -->
-            <input type="hidden" name="file_path" value="{{ file_path }}">
-            <button type="submit">Exportar Datos Seleccionados</button>
-        </form>
-    {% endif %}
 </body>
 </html>

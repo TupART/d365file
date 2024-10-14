@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Seleccionar Personas</title>
+</head>
+<body>
+    <h1>Seleccionar personas para exportar</h1>
+    <form action="/process_selected" method="post" enctype="multipart/form-data">
+        {% for person in people %}
+            <input type="checkbox" name="selected_people" value="{{ person.name }} {{ person.surname }}">
+            {{ person.name }} {{ person.surname }}<br>
+        {% endfor %}
+        <input type="file" name="file" accept=".xlsx" required>
+        <button type="submit">Exportar</button>
+    </form>
+</body>
+</html>
