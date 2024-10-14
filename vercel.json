@@ -1,10 +1,4 @@
 {
-    "builds": [
-        {
-            "src": "procesar_excel.py",
-            "use": "@vercel/python"
-        }
-    ],
     "routes": [
         {
             "src": "/(.*)",
