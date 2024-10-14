@@ -44,6 +44,10 @@ def generate_checkboxes():
                     'surname': row[1]  # Columna B ("Surname")
                 })
 
+        # Verificar si se extrajo alguna persona
+        if not people:
+            return "No se encontraron personas en el archivo", 400
+
         # Renderizar la página con los checkboxes
         return render_template('index.html', people=people, file_path=file_path)
 
