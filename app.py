@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, send_file, redirect, url_for
+from flask import Flask, request, render_template, send_file
 import openpyxl
 from procesar_excel import procesar_datos
 import os
@@ -40,9 +40,9 @@ def process_selected():
     
     return send_file(output_path, as_attachment=True)
 
-# Especificar que Vercel utilice 'app' como entry point
+# Asegúrate de que 'app' esté accesible para Vercel
 if __name__ == '__main__':
     app.run(debug=True)
 
-# Exponer el objeto 'app' para Vercel
-app = app
+# Aquí asignamos 'app' para que sea reconocido por Vercel
+handler = app
