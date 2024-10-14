@@ -60,7 +60,7 @@ def export_selected():
             return "No seleccionaste ninguna persona", 400
 
         # Cargar la plantilla original
-        plantilla_path = 'Plantilla.xlsx'
+        plantilla_path = 'PlantillaSTEP4.xlsx'
         wb_plantilla = load_workbook(plantilla_path)
         ws_plantilla = wb_plantilla.active
 
